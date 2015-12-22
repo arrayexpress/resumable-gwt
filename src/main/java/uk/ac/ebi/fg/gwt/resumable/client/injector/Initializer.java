@@ -15,15 +15,27 @@
  *
  */
 
-package uk.ac.ebi.fg.gwt.resumable.client;
+package uk.ac.ebi.fg.gwt.resumable.client.injector;
 
-import com.google.gwt.core.client.EntryPoint;
-import uk.ac.ebi.fg.gwt.resumable.client.injector.Initializer;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.TextResource;
 
-public class Resumable implements EntryPoint {
+public class Initializer {
 
-    @Override
-    public void onModuleLoad() {
-        Initializer.configure();
+    public interface Resources extends ClientBundle{
+
+        @ClientBundle.Source("resumable-1.0-14122015.js")
+        TextResource d3JsScript();
+
+
+    }
+    public static void configure() {
+        Resources resources = GWT.create(Resources.class);
+        injectJs(resources.d3JsScript());
+    }
+
+    private static void injectJs(final TextResource r) {
+        JavaScriptInjector.inject(r.getText());
     }
 }
