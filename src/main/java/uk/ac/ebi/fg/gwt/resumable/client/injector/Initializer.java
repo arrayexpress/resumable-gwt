@@ -23,13 +23,12 @@ import com.google.gwt.resources.client.TextResource;
 
 public class Initializer {
 
-    public interface Resources extends ClientBundle{
+    public interface Resources extends ClientBundle {
 
-        @ClientBundle.Source("resumable-1.0-14122015.js")
+        @ClientBundle.Source("../resumable-1.0-14122015.js")
         TextResource d3JsScript();
-
-
     }
+
     public static void configure() {
         Resources resources = GWT.create(Resources.class);
         injectJs(resources.d3JsScript());

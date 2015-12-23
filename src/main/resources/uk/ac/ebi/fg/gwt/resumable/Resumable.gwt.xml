@@ -18,9 +18,9 @@
 -->
 <module rename-to='Resumable'>
     <inherits name='com.google.gwt.user.User' />
+    <inherits name="com.google.gwt.resources.Resources" />
 
     <entry-point class="uk.ac.ebi.fg.gwt.resumable.client.Resumable" />
 
     <source path='client'/>
-    <script path='js/resumable-1.0-14122015.js'/>
 </module>
