@@ -116,8 +116,12 @@ public class ResumableUploadServlet extends HttpServlet {
     private final String uploadDirectory;
 
     public ResumableUploadServlet() {
-        String directory = nullToEmpty(getServletConfig().getInitParameter(SERVLET_PARAM_UPLOAD_DIRECTORY));
-        uploadDirectory = !directory.isEmpty() ? directory : System.getProperty("java.io.tmpdir");
+        if (null != getServletConfig()) {
+            String directory = nullToEmpty(getServletConfig().getInitParameter(SERVLET_PARAM_UPLOAD_DIRECTORY));
+            uploadDirectory = !directory.isEmpty() ? directory : System.getProperty("java.io.tmpdir");;
+        } else {
+            uploadDirectory = System.getProperty("java.io.tmpdir");
+        }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
