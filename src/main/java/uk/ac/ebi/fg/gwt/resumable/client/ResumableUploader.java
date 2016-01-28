@@ -66,6 +66,22 @@ public class ResumableUploader extends JavaScriptObject {
         }
     }-*/;
 
+    public final native void pause() /*-{
+        if (undefined !== this.pause) {
+            this.pause();
+        } else {
+            console.error('resumable.pause: please obtain an instance through ResumableUpload.newInstance');
+        }
+    }-*/;
+
+    public final native void cancel() /*-{
+        if (undefined !== this.cancel) {
+            this.cancel();
+        } else {
+            console.error('resumable.cancel: please obtain an instance through ResumableUpload.newInstance');
+        }
+    }-*/;
+
     public final native void addCallback(ResumableFileCallback callback) /*-{
         if (undefined !== this.on) {
             this.on('fileAdded', function(file) {
