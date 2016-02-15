@@ -782,8 +782,8 @@
                     // Status is really 'OPENED', 'HEADERS_RECEIVED' or 'LOADING' - meaning that stuff is happening
                     return('uploading');
                 } else {
-                    if($.xhr.status == 200 || $.xhr.status == 201) {
-                        // HTTP 200 or 201 (created) perfect
+                    if($.xhr.status == 200 || $.xhr.status == 201 || $.xhr.status == 204) {
+                        // HTTP 200, 201 (created), 204 (no content)
                         return('success');
                     } else if($h.contains($.getOpt('permanentErrors'), $.xhr.status) || $.retries >= $.getOpt('maxChunkRetries')) {
                         // HTTP 415/500/501, permanent error
@@ -803,6 +803,7 @@
                 if(typeof(relative)==='undefined') relative = false;
                 var factor = (relative ? ($.endByte-$.startByte)/$.fileObjSize : 1);
                 if($.pendingRetry) return(0);
+                if(!$.xhr || !$.xhr.status) factor*=.95;
                 var s = $.status();
                 switch(s){
                     case 'success':

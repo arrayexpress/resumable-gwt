@@ -25,13 +25,13 @@ public class Initializer {
 
     public interface Resources extends ClientBundle {
 
-        @ClientBundle.Source("../resumable-1.0-14122015.js")
-        TextResource d3JsScript();
+        @ClientBundle.Source("../resumable-1.0-15022016.js")
+        TextResource resumableJsScript();
     }
 
     public static void configure() {
         Resources resources = GWT.create(Resources.class);
-        injectJs(resources.d3JsScript());
+        injectJs(resources.resumableJsScript());
     }
 
     private static void injectJs(final TextResource r) {
