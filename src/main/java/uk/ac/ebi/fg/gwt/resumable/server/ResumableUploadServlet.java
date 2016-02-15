@@ -206,12 +206,14 @@ public class ResumableUploadServlet extends HttpServlet {
         BufferedReader br;
         StringBuilder sb = new StringBuilder();
 
-        String line;
-        try (InputStream is = part.getInputStream()) {
-            if (null != is) {
-                br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-                while ((line = br.readLine()) != null) {
-                    sb.append(line);
+        if (null != part) {
+            String line;
+            try (InputStream is = part.getInputStream()) {
+                if (null != is) {
+                    br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                    while ((line = br.readLine()) != null) {
+                        sb.append(line);
+                    }
                 }
             }
         }
