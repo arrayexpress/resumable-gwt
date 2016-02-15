@@ -91,7 +91,7 @@ public class ResumableUploader extends JavaScriptObject {
                 callback.@uk.ac.ebi.fg.gwt.resumable.client.ResumableCallback::onComplete(*)(this);
             });
             this.on('progress', function() {
-                callback.@uk.ac.ebi.fg.gwt.resumable.client.ResumableCallback::onProgress(*)(this, );
+                callback.@uk.ac.ebi.fg.gwt.resumable.client.ResumableCallback::onProgress(*)(this);
             });
             this.on('error', function(message, file) {
                 callback.@uk.ac.ebi.fg.gwt.resumable.client.ResumableCallback::onError(*)(this, message, file);
