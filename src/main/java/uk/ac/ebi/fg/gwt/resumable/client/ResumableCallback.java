@@ -17,13 +17,15 @@
 
 package uk.ac.ebi.fg.gwt.resumable.client;
 
-import com.google.gwt.core.client.JsArray;
-
-public interface ResumableFileCallback {
-    void onFileAdded(ResumableUploader uploader, ResumableFile file);
-    void onFilesAdded(ResumableUploader uploader, JsArray<ResumableFile> files);
-    void onFileProgress(ResumableUploader uploader, ResumableFile file);
-    void onFileSuccess(ResumableUploader uploader, ResumableFile file);
-    void onFileRetry(ResumableUploader uploader, ResumableFile file);
-    void onFileError(ResumableUploader uploader, ResumableFile file, String message);
+public interface ResumableCallback {
+    void onUploadStart(ResumableUploader uploader);
+    void onComplete(ResumableUploader uploader);
+    void onProgress(ResumableUploader uploader);
+    void onError(ResumableUploader uploader, String message, ResumableFile file);
+    void onPause();
+    void beforeCancel();
+    void onCancel();
+    void onChunkingStart(ResumableFile file);
+    void onChunkingProgress(ResumableFile file, String ratio);
+    void onChunkingComplete(ResumableFile file);
 }

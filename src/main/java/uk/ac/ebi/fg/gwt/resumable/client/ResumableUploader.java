@@ -1,5 +1,5 @@
 /*
- * Copyright 2009-2015 European Molecular Biology Laboratory
+ * Copyright 2009-2016 European Molecular Biology Laboratory
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ public class ResumableUploader extends JavaScriptObject {
         if (undefined !== $wnd.Resumable) {
             return new $wnd.Resumable({
                 target: url,
-                query: {xxx: 'xxx'},
+                //query: {xxx: 'xxx'},
                 method: "multupart"
             });
         } else {
@@ -82,7 +82,44 @@ public class ResumableUploader extends JavaScriptObject {
         }
     }-*/;
 
-    public final native void addCallback(ResumableFileCallback callback) /*-{
+    public final native void addCallback(ResumableCallback callback) /*-{
+        if (undefined !== this.on) {
+            this.on('uploadStart', function() {
+                callback.@uk.ac.ebi.fg.gwt.resumable.client.ResumableCallback::onUploadStart(*)(this)
+            });
+            this.on('complete', function() {
+                callback.@uk.ac.ebi.fg.gwt.resumable.client.ResumableCallback::onComplete(*)(this);
+            });
+            this.on('progress', function() {
+                callback.@uk.ac.ebi.fg.gwt.resumable.client.ResumableCallback::onProgress(*)(this, );
+            });
+            this.on('error', function(message, file) {
+                callback.@uk.ac.ebi.fg.gwt.resumable.client.ResumableCallback::onError(*)(this, message, file);
+            });
+            this.on('pause', function() {
+                callback.@uk.ac.ebi.fg.gwt.resumable.client.ResumableCallback::onPause(*)(this);
+            });
+            this.on('beforeCancel', function() {
+                callback.@uk.ac.ebi.fg.gwt.resumable.client.ResumableCallback::beforeCancel(*)(this);
+            });
+            this.on('cancel', function() {
+                callback.@uk.ac.ebi.fg.gwt.resumable.client.ResumableCallback::onCancel(*)(this);
+            });
+            this.on('chunkingStart', function(file) {
+                callback.@uk.ac.ebi.fg.gwt.resumable.client.ResumableCallback::onChunkingStart(*)(this, file);
+            });
+            this.on('chunkingProgress', function(file, ratio) {
+                callback.@uk.ac.ebi.fg.gwt.resumable.client.ResumableCallback::onChunkingProgress(*)(this, file, ratio);
+            });
+            this.on('chunkingComplete', function(file) {
+                callback.@uk.ac.ebi.fg.gwt.resumable.client.ResumableCallback::onChunkingComplete(*)(this, file);
+            });
+        } else {
+            console.error('resumable.on: please obtain an instance through ResumableUpload.newInstance');
+        }
+    }-*/;
+
+    public final native void addFileCallback(ResumableFileCallback callback) /*-{
         if (undefined !== this.on) {
             this.on('fileAdded', function(file) {
                 callback.@uk.ac.ebi.fg.gwt.resumable.client.ResumableFileCallback::onFileAdded(*)(this, file)
