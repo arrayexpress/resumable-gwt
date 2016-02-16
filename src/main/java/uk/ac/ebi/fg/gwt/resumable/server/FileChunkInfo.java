@@ -17,59 +17,17 @@
 
 package uk.ac.ebi.fg.gwt.resumable.server;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-
-import static uk.ac.ebi.fg.gwt.resumable.server.ResumableUploadServlet.*;
-
 public class FileChunkInfo {
 
-    int         chunkNumber;
-    int         chunkSize;
-    long        fileSize;
-    String      id;
-    String      fileName;
-    String      relativePath;
-
-    public static FileChunkInfo build(HttpServletRequest request) throws IOException, ServletException {
-        FileChunkInfo info = new FileChunkInfo();
-
-        info.chunkNumber = parseInt(getParam(request, RESUMABLE_CHUNK_NUMBER), -1);
-        info.chunkSize = parseInt(getParam(request, RESUMABLE_CHUNK_SIZE), -1);
-        info.fileSize = parseLong(getParam(request, RESUMABLE_TOTAL_SIZE), -1);
-        info.id = nullToEmpty(getParam(request, RESUMABLE_IDENTIFIER));
-        info.fileName = nullToEmpty(getParam(request, RESUMABLE_FILENAME));
-        info.relativePath = nullToEmpty(getParam(request, RESUMABLE_RELATIVE_PATH));
-
-        return info;
-    }
+    public int         chunkNumber;
+    public int         chunkSize;
+    public long        fileSize;
+    public String      id;
+    public String      fileName;
+    public String      relativePath;
 
     public boolean isValid() {
         return chunkNumber >= 0 && chunkSize > 0 && fileSize > 0
                 && !id.isEmpty() && !fileName.isEmpty() && !relativePath.isEmpty();
-    }
-
-    private static String nullToEmpty(String value) {
-        if (null == value) {
-            return "";
-        }
-        return value;
-    }
-
-    private static int parseInt(String value, int fallbackValue) {
-        try {
-            return Integer.parseInt(value);
-        } catch (NumberFormatException x) {
-            return fallbackValue;
-        }
-    }
-
-    private static long parseLong(String value, long fallbackValue) {
-        try {
-            return Long.parseLong(value);
-        } catch (NumberFormatException x) {
-            return fallbackValue;
-        }
     }
 }

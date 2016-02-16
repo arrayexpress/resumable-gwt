@@ -55,7 +55,7 @@ public class ResumableUploadServlet extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
-        FileChunkInfo info = FileChunkInfo.build(request);
+        FileChunkInfo info = buildChunkInfo(request);
         if (!info.isValid()) {
             throw new ServletException("Invalid request parameters");
         }
@@ -80,13 +80,30 @@ public class ResumableUploadServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
 
-        FileChunkInfo info = FileChunkInfo.build(request);
+        FileChunkInfo info = buildChunkInfo(request);
+        if (!info.isValid()) {
+            throw new ServletException("Invalid request parameters");
+        }
+
 
         if (storage.hasChunk(info)) {
             response.getWriter().print(RESPONSE_UPLOADED);
         } else {
             response.setStatus(HttpServletResponse.SC_NO_CONTENT);
         }
+    }
+
+    protected FileChunkInfo buildChunkInfo(HttpServletRequest request) throws IOException, ServletException {
+        FileChunkInfo info = new FileChunkInfo();
+
+        info.chunkNumber = parseInt(getParam(request, RESUMABLE_CHUNK_NUMBER), -1);
+        info.chunkSize = parseInt(getParam(request, RESUMABLE_CHUNK_SIZE), -1);
+        info.fileSize = parseLong(getParam(request, RESUMABLE_TOTAL_SIZE), -1);
+        info.id = nullToEmpty(getParam(request, RESUMABLE_IDENTIFIER));
+        info.fileName = nullToEmpty(getParam(request, RESUMABLE_FILENAME));
+        info.relativePath = nullToEmpty(getParam(request, RESUMABLE_RELATIVE_PATH));
+
+        return info;
     }
 
     private static boolean isMultipart(HttpServletRequest request) {
@@ -118,4 +135,28 @@ public class ResumableUploadServlet extends HttpServlet {
         return isMultipart(request) ?
                 partToString(request.getPart(paramName)) : request.getParameter(paramName);
     }
+
+    private static String nullToEmpty(String value) {
+        if (null == value) {
+            return "";
+        }
+        return value;
+    }
+
+    private static int parseInt(String value, int fallbackValue) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException x) {
+            return fallbackValue;
+        }
+    }
+
+    private static long parseLong(String value, long fallbackValue) {
+        try {
+            return Long.parseLong(value);
+        } catch (NumberFormatException x) {
+            return fallbackValue;
+        }
+    }
+
 }
