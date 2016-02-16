@@ -26,15 +26,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SimpleUploadStorage implements UploadStorage {
+public class SimpleUploadStorageImpl implements UploadStorage {
 
     private final String uploadDirectory;
 
-    public SimpleUploadStorage() {
+    public SimpleUploadStorageImpl() {
         this.uploadDirectory = System.getProperty("java.io.tmpdir");
     }
 
-    public SimpleUploadStorage(String uploadDirectory) {
+    public SimpleUploadStorageImpl(String uploadDirectory) {
         if (null != uploadDirectory && new File(uploadDirectory).isDirectory() && new File(uploadDirectory).canWrite()) {
             this.uploadDirectory = uploadDirectory;
         } else {

@@ -44,7 +44,7 @@ public class ResumableUploadServlet extends HttpServlet {
     private UploadStorage storage;
 
     public ResumableUploadServlet() {
-        setStorage(new SimpleUploadStorage());
+        setStorage(new SimpleUploadStorageImpl());
     }
 
     public void setStorage(UploadStorage storage) {
