@@ -31,15 +31,19 @@ import java.io.InputStreamReader;
 @MultipartConfig
 public class ResumableUploadServlet extends HttpServlet {
 
-    public final static String RESUMABLE_CHUNK_NUMBER          = "resumableChunkNumber";
-    public final static String RESUMABLE_CHUNK_SIZE            = "resumableChunkSize";
-    public final static String RESUMABLE_TOTAL_SIZE            = "resumableTotalSize";
-    public final static String RESUMABLE_IDENTIFIER            = "resumableIdentifier";
-    public final static String RESUMABLE_FILENAME              = "resumableFilename";
-    public final static String RESUMABLE_RELATIVE_PATH         = "resumableRelativePath";
+    public final static String RESUMABLE_CHUNK_NUMBER           = "resumableChunkNumber";
+    public final static String RESUMABLE_CHUNK_SIZE             = "resumableChunkSize";
+    public final static String RESUMABLE_TOTAL_SIZE             = "resumableTotalSize";
+    public final static String RESUMABLE_IDENTIFIER             = "resumableIdentifier";
+    public final static String RESUMABLE_FILENAME               = "resumableFilename";
+    public final static String RESUMABLE_RELATIVE_PATH          = "resumableRelativePath";
 
     private final static String RESPONSE_UPLOADED               = "Uploaded.";
     private final static String RESPONSE_ALL_FINISHED           = "All finished.";
+    private final static String RESPONSE_INVALID_REQUEST        = "Invalid request parameters.";
+
+    private final static String RESUMABLE_FILE_CHUNK            = "file";
+    private final static String RESUMABLE_ENCODING              = "UTF-8";
 
     private UploadStorage storage;
 
@@ -53,18 +57,18 @@ public class ResumableUploadServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding(RESUMABLE_ENCODING);
 
         FileChunkInfo info = buildChunkInfo(request);
         if (!info.isValid()) {
-            throw new ServletException("Invalid request parameters");
+            throw new ServletException(RESPONSE_INVALID_REQUEST);
         }
 
         if (!storage.hasChunk(info)) {
             try (InputStream is = isMultipart(request) ?
-                    request.getPart("file").getInputStream() : request.getInputStream()) {
+                    request.getPart(RESUMABLE_FILE_CHUNK).getInputStream() : request.getInputStream()) {
                 long length = isMultipart(request) ?
-                        request.getPart("file").getSize() : request.getContentLength();
+                        request.getPart(RESUMABLE_FILE_CHUNK).getSize() : request.getContentLength();
 
                 storage.storeChunk(info, is, length);
             }
@@ -78,11 +82,11 @@ public class ResumableUploadServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding(RESUMABLE_ENCODING);
 
         FileChunkInfo info = buildChunkInfo(request);
         if (!info.isValid()) {
-            throw new ServletException("Invalid request parameters");
+            throw new ServletException(RESPONSE_INVALID_REQUEST);
         }
 
 
@@ -120,7 +124,7 @@ public class ResumableUploadServlet extends HttpServlet {
             String line;
             try (InputStream is = part.getInputStream()) {
                 if (null != is) {
-                    br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                    br = new BufferedReader(new InputStreamReader(is, RESUMABLE_ENCODING));
                     while ((line = br.readLine()) != null) {
                         sb.append(line);
                     }
