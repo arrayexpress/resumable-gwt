@@ -25,5 +25,4 @@ public interface UploadStorage {
     boolean hasChunk(FileChunkInfo info);
     boolean hasAllChunks(FileChunkInfo info);
     void storeChunk(FileChunkInfo info, InputStream stream, long length) throws IOException;
-
 }

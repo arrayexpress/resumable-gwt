@@ -74,6 +74,13 @@ public class SimpleUploadStorageImpl implements UploadStorage {
                 }
             }
             storageInfo.addChunk(info.chunkNumber);
+            if (storageInfo.hasAllChunks(info)) {
+                if (!new File(storageInfo.storageFileLocation).renameTo(
+                        new File(storageInfo.storageFileLocation.replaceFirst("[.]upload$", "")))
+                        ) {
+                    throw new IOException("Unable to rename file " + storageInfo.storageFileLocation + " to " + storageInfo.fileName);
+                }
+            }
         }
     }
 

@@ -25,17 +25,16 @@ public class ResumableUploader extends JavaScriptObject {
 
     protected ResumableUploader() {}
 
-
-    public static ResumableUploader newInstance(String url) {
-        return createResumableJso(url);
+    public static ResumableUploader newInstance(String url, String method) {
+        return createResumableJso(url, method);
     }
 
-    private static native ResumableUploader createResumableJso(String url) /*-{
+    /* TODO: support all parameters */
+    private static native ResumableUploader createResumableJso(String url, String method) /*-{
         if (undefined !== $wnd.Resumable) {
             return new $wnd.Resumable({
                 target: url,
-                //query: {xxx: 'xxx'},
-                method: "multupart"
+                method: method
             });
         } else {
             console.error('resumable.init: please ensure resumable.js is included');
