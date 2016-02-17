@@ -141,6 +141,4 @@ public class SimpleUploadStorageImpl implements UploadStorage {
 
         return storageMap.get(fileId);
     }
-
-
 }
