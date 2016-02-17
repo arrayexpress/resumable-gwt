@@ -27,8 +27,13 @@ public class ResumableFile extends JavaScriptObject {
         return this.fileName;
     }-*/;
 
-    public final native String getFileSize() /*-{
-        return this.size;
+    public final long getSize() {
+        String size = _getSize();
+        return Long.parseLong(size);
+    }
+
+    private final native String _getSize() /*-{
+        return "" + this.size;
     }-*/;
 
     public final native float getProgress(boolean isRelative) /*-{
