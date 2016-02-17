@@ -22,7 +22,7 @@ import java.io.InputStream;
 
 public interface UploadStorage {
 
-    boolean hasChunk(FileChunkInfo info);
-    boolean hasAllChunks(FileChunkInfo info);
+    boolean hasChunk(FileChunkInfo info) throws IOException;
+    boolean hasAllChunks(FileChunkInfo info) throws IOException;
     void storeChunk(FileChunkInfo info, InputStream stream, long length) throws IOException;
 }
