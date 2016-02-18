@@ -81,6 +81,38 @@ public class ResumableUploader extends JavaScriptObject {
         }
     }-*/;
 
+    public final native float progress() /*-{
+        if (undefined !== this.progress) {
+            return this.progress();
+        } else {
+            console.error('resumable.progress: please obtain an instance through ResumableUpload.newInstance');
+        }
+    }-*/;
+
+    public final native boolean isUploading() /*-{
+        if (undefined !== this.isUploading) {
+            return this.isUploading();
+        } else {
+            console.error('resumable.isUploading: please obtain an instance through ResumableUpload.newInstance');
+        }
+    }-*/;
+
+    public final native void addFile(ResumableFile file) /*-{
+        if (undefined !== this.addFile) {
+            this.addFile(file);
+        } else {
+            console.error('resumable.addFile: please obtain an instance through ResumableUpload.newInstance');
+        }
+    }-*/;
+
+    public final native void removeFile(ResumableFile file) /*-{
+        if (undefined !== this.removeFile) {
+            this.removeFile(file);
+        } else {
+            console.error('resumable.addFile: please obtain an instance through ResumableUpload.newInstance');
+        }
+    }-*/;
+
     public final native void addCallback(ResumableCallback callback) /*-{
         if (undefined !== this.on) {
             this.on('uploadStart', function() {
