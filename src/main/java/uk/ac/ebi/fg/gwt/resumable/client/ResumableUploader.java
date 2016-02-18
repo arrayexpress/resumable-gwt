@@ -20,22 +20,27 @@ package uk.ac.ebi.fg.gwt.resumable.client;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.json.client.JSONObject;
 
 public class ResumableUploader extends JavaScriptObject {
 
     protected ResumableUploader() {}
 
-    public static ResumableUploader newInstance(String url, String method) {
-        return createResumableJso(url, method);
+    public static ResumableUploader newInstance(String url) {
+        return createResumableJso(url, null);
     }
 
-    /* TODO: support all parameters */
-    private static native ResumableUploader createResumableJso(String url, String method) /*-{
+    public static ResumableUploader newInstance(String url, JSONObject options) {
+        return createResumableJso(url, options.getJavaScriptObject());
+    }
+
+    private static native ResumableUploader createResumableJso(String url, JavaScriptObject options) /*-{
         if (undefined !== $wnd.Resumable) {
-            return new $wnd.Resumable({
-                target: url,
-                method: method
-            });
+            if (undefined == options) {
+                options = {};
+            }
+            options.target = url;
+            return new $wnd.Resumable(options);
         } else {
             console.error('resumable.init: please ensure resumable.js is included');
         }
