@@ -19,12 +19,13 @@ package uk.ac.ebi.fg.gwt.resumable.server;
 
 public class FileChunkInfo {
 
-    public int         chunkNumber;
-    public int         chunkSize;
-    public long        fileSize;
-    public String      id;
-    public String      fileName;
-    public String      relativePath;
+    public int          chunkNumber;
+    public int          chunkSize;
+    public int          currentChunkSize;
+    public long         fileSize;
+    public String       id;
+    public String       fileName;
+    public String       relativePath;
 
     public boolean isValid() {
         return chunkNumber >= 0 && chunkSize > 0 && fileSize > 0

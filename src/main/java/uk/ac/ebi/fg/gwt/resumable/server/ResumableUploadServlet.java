@@ -33,6 +33,7 @@ public class ResumableUploadServlet extends HttpServlet {
 
     public final static String RESUMABLE_CHUNK_NUMBER           = "resumableChunkNumber";
     public final static String RESUMABLE_CHUNK_SIZE             = "resumableChunkSize";
+    public final static String RESUMABLE_CURRENT_CHUNK_SIZE     = "resumableCurrentChunkSize";
     public final static String RESUMABLE_TOTAL_SIZE             = "resumableTotalSize";
     public final static String RESUMABLE_IDENTIFIER             = "resumableIdentifier";
     public final static String RESUMABLE_FILENAME               = "resumableFilename";
@@ -70,6 +71,10 @@ public class ResumableUploadServlet extends HttpServlet {
                 long length = isMultipart(request) ?
                         request.getPart(RESUMABLE_FILE_CHUNK).getSize() : request.getContentLength();
 
+                if (length != info.currentChunkSize) {
+                    throw new ServletException(RESPONSE_INVALID_REQUEST);
+                }
+
                 storage.storeChunk(info, is, length);
             }
             if (storage.hasAllChunks(info)) {
@@ -102,6 +107,7 @@ public class ResumableUploadServlet extends HttpServlet {
 
         info.chunkNumber = parseInt(getParam(request, RESUMABLE_CHUNK_NUMBER), -1);
         info.chunkSize = parseInt(getParam(request, RESUMABLE_CHUNK_SIZE), -1);
+        info.currentChunkSize = parseInt(getParam(request, RESUMABLE_CURRENT_CHUNK_SIZE), -1);
         info.fileSize = parseLong(getParam(request, RESUMABLE_TOTAL_SIZE), -1);
         info.id = nullToEmpty(getParam(request, RESUMABLE_IDENTIFIER));
         info.fileName = nullToEmpty(getParam(request, RESUMABLE_FILENAME));
