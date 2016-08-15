@@ -893,6 +893,10 @@
                     }, false);
                     domNode.appendChild(input);
                 }
+                var accept = $.getOpt('accept');
+                if (typeof(accept)!=='undefined'){
+                    input.setAttribute('accept', accept);
+                }
                 var maxFiles = $.getOpt('maxFiles');
                 if (typeof(maxFiles)==='undefined'||maxFiles!=1){
                     input.setAttribute('multiple', 'multiple');
