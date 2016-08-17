@@ -23,7 +23,7 @@
     <groupId>uk.ac.ebi.fg.gwt</groupId>
     <artifactId>resumable-gwt</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.2</version>
 
     <dependencies>
         <dependency>
